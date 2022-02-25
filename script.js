@@ -1,3 +1,5 @@
+let jsonList = [];
+
 // Selector
 const todoInput = document.querySelector('#todoInput');
 const todoButton = document.querySelector(".btn-click");
@@ -53,10 +55,13 @@ function addTodo(event) {
     todoList.appendChild(todoDiv);
 
     // Clear TODO-INPUT Value
-    todoInput.value = '';
+    // todoInput.value = '';
 
     // For increment 
     increment();
+
+    // Function called for JSON data
+    add();
 }
 // addTodo();
 
@@ -72,13 +77,15 @@ function deleteCheck(e) {
         todo.remove();
         // For Decreasing Count
         decrement();
+        
+        delJSON();
     }
 
     // CHECK MARK
     if(item.classList[0] === 'custom-radio'){
         const todo = item.parentElement;
         todo.classList.toggle("completed")
-    }    
+    }
 }
 
 function filterTodo(e){
@@ -92,8 +99,8 @@ function filterTodo(e){
     // console.log(todo);        
         switch (e.target.value) {    // options checking all, active, complete, uncomplete
             case 'all':
-                    if(todo.classList[0] === "todo" ){
-                        todo.style.display = 'flex'
+                    if(todo.classList[0] === "todo" ) {
+                        todo.style.display = 'flex';            
                     } else {
                         todo.style.display = 'none'
                     } 
@@ -125,4 +132,33 @@ function filterTodo(e){
                 break;
         }
     }
+};
+
+function update() {
+    // document.querySelector(".todoList").value = ''
+    for(let todo of jsonList) {
+            document.getElementById("list").value += `${todo.text}`
+        // document.querySelector(".todoList").innerHTML += `${todo.text}`
+    }
+    console.log(jsonList);
+}
+
+let id = 0;
+function add() {
+    id++;
+    jsonList.push({
+        id: id,
+        text: document.querySelector("#todoInput").value,
+        timestamp: new Date(),
+        // color: id % 2 === 0 ? "green" : "red"
+    })
+    update();
+}
+
+// delete jsonList[id]
+// jsonList.splice(0,1);
+
+function delJSON() {
+    // jsonList.filter((item) => item.id !== id)
+    jsonList.splice(jsonList.indexOf(id), 1);
 }
