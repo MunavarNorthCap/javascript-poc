@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "text": "some text 1",
+        "timestamp": "new Date()",
+        "className" : "optional"
+    },
+    {
+        "id": 2,
+        "text": "text 2",
+        "timestamp": "new Date()",
+        "className" : "optional"
+    }
+]
