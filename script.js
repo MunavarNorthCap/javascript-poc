@@ -77,7 +77,7 @@ function deleteCheck(e) {
         todo.remove();
         // For Decreasing Count
         decrement();
-        
+        // debugger;
         delJSON();
     }
 
@@ -126,6 +126,7 @@ function filterTodo(e){
                 if(todo.classList[1] === "completed" ){
                     todo.remove();
                     decrement();
+                    delJSON();
                 }
                 break;
             default:
@@ -137,7 +138,7 @@ function filterTodo(e){
 function update() {
     // document.querySelector(".todoList").value = ''
     for(let todo of jsonList) {
-            document.getElementById("list").value += `${todo.text}`
+        document.getElementById("list").value += `${todo.text}`
         // document.querySelector(".todoList").innerHTML += `${todo.text}`
     }
     console.log(jsonList);
@@ -155,10 +156,12 @@ function add() {
     update();
 }
 
-// delete jsonList[id]
+// delete jsonList['id']
 // jsonList.splice(0,1);
 
 function delJSON() {
-    // jsonList.filter((item) => item.id !== id)
-    jsonList.splice(jsonList.indexOf(id), 1);
+    jsonList.splice(jsonList.indexOf(), 1);
+    // for (let del of jsonList){
+    //     jsonList.splice(jsonList.indexOf(del));
+    // }
 }
