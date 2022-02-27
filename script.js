@@ -136,11 +136,14 @@ function filterTodo(e){
 };
 
 function update() {
-    // document.querySelector(".todoList").value = ''
+    document.getElementById("todoInput").value = ''
     for(let todo of jsonList) {
-        document.getElementById("list").value += `${todo.text}`
-        // document.querySelector(".todoList").innerHTML += `${todo.text}`
+        document.getElementById("list").value += `${todo.id} - ${todo.text} - ${todo.timestamp}`
+        // document.querySelector("#list").innerHTML += `${todo.text}`
     }
+    // for(let i = 1; i< jsonList.length; i++){
+    //     document.querySelector(".todoList").innerHTML += `${i.text}`
+    // }
     console.log(jsonList);
 }
 
@@ -149,7 +152,8 @@ function add() {
     id++;
     jsonList.push({
         id: id,
-        text: document.querySelector("#todoInput").value,
+        // text: document.querySelector("#todoInput").value,
+        text: document.getElementById("todoInput").value,
         timestamp: new Date(),
         // color: id % 2 === 0 ? "green" : "red"
     })
