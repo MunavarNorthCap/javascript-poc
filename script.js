@@ -1,128 +1,84 @@
-// Selector
-const todoInput = document.querySelector('#todoInput');
-const todoButton = document.querySelector(".btn-click");
-const todoList = document.querySelector(".todoList");
-const filterOption = document.querySelector(".filter-todo");
+let jsonList = [];
 
-// Event Listener
-todoButton.addEventListener('click', addTodo);
-todoList.addEventListener('click', deleteCheck); // for deleting
-filterOption.addEventListener('click', filterTodo);
+let form = document.getElementById("form");
+form.addEventListener('submit', function(e){
+    e.preventDefault();
+})
 
-// Function
 var count = 0;
 function increment() {
-    count += 1;
-    document.getElementById("incrementVal").innerText = count;
+  count += 1;
+  document.getElementById("incrementVal").innerText = count;
 }
 function decrement() {
-    count = count -1;
-    document.getElementById("incrementVal").innerText = count;
+  count = count -1;
+  document.getElementById("incrementVal").innerText = count;
 }
 
-function addTodo(event) {
-    // Prevent form from submitting
-    event.preventDefault();
-
-    // Todo DIV
-    const todoDiv = document.createElement('div');
-    // console.log(todoDiv)
-    todoDiv.classList.add("todo");
-    
-    //CHECK MARK BUTTON
-    const radioButton = document.createElement('input');
-    radioButton.type = 'radio';
-    // radioButton.classList.add("radio-btn");
-    radioButton.classList.add("custom-radio");
-    todoDiv.appendChild(radioButton);
-
-    // Create LI
-    const newTodo = document.createElement('li');
-    newTodo.innerText = todoInput.value;
-    newTodo.classList.add('todo-item');
-    todoDiv.appendChild(newTodo);
-
-    //Delete BUTTON
-    const trashButton = document.createElement('button');
-    trashButton.innerHTML = '<i class="fa-solid fa-x"></i>';
-    trashButton.classList.add("trash-btn");
-    // trashButton.className ="trash-btn";
-    todoDiv.appendChild(trashButton);
-
-    // APPEND TO LIST
-    todoList.appendChild(todoDiv);
-
-    // Clear TODO-INPUT Value
-    todoInput.value = '';
-
-    // For increment 
-    increment();
+function addTodo(values) {
+  document.getElementById("todoList").innerHTML = ""
+  for (let todo of values) {
+    document.getElementById("todoList").innerHTML += `<div class="todo" 
+    style="color:${todo.color};
+    text-decoration: ${todo.done ? "line-through" : "auto"};"> 
+    <input type='radio' class="custom-radio" onclick="done(${todo.id})" />
+    ${todo.id}  - ${todo.text} - ${todo.timestamp}
+    <button class='trash-btn' onclick="delJSON()">
+    <i class="fa-solid fa-x"></i></button>
+    </div>`
+  }
+  console.log(values);
 }
-// addTodo();
 
-function deleteCheck(e) {
-    // console.log(e.target);
-    const item = e.target;
-    
-    // DELETE TODO
-    if(item.classList[0] === 'trash-btn'){        
-        // item.remove(); -->  trash icon is deleting
-        const todo = item.parentElement; // here parentElement is 'div' of ul
-        // console.log(item.parentElement);
-        todo.remove();
-        // For Decreasing Count
-        decrement();
+let id = 0;
+function add() {
+	id++;
+	jsonList.push({
+  	id: id,
+    text: document.getElementById("todoInput").value,
+    timestamp: new Date(),
+    color: id % 2 === 0 ?  "green" : "red",
+    done: false
+  });
+  document.getElementById("todoInput").value = ""
+  addTodo(jsonList);
+  increment();
+}
+
+function done(id) {
+	todos = jsonList.map((td) => {
+  	if (td.id === id) {
+    	return {...td, done: !td.done}
     }
-
-    // CHECK MARK
-    if(item.classList[0] === 'custom-radio'){
-        const todo = item.parentElement;
-        todo.classList.toggle("completed")
-    }    
+    return td;
+  })
+  addTodo(todos);
+  // console.log(todos);
 }
 
-function filterTodo(e){
-    // const todos = todoList.childNodes;
-    const todos = todoList.children;
-    // console.log(todos);  // div.todo
-    
-    // Array.prototype.forEach.call(todos, function(todo) {
-    for(let todo of todos) {
-    // todos.forEach(function(todo) {
-    // console.log(todo);        
-        switch (e.target.value) {    // options checking all, active, complete, uncomplete
-            case 'all':
-                    if(todo.classList[0] === "todo" ){
-                        todo.style.display = 'flex'
-                    } else {
-                        todo.style.display = 'none'
-                    } 
-                break;
-            case 'active':
-                let itemActive = document.getElementsByClassName('todo');
-                for(i=0; i<itemActive.length; i++){
-                    itemActive[i].style.display = 'flex'
-                }
-                let itemsInActive = document.getElementsByClassName('completed');
-                for(i=0; i<itemsInActive.length; i++){
-                    itemsInActive[i].style.display = 'none';
-                }
-                break;
-            case 'completed':
-                if(todo.classList[1] === "completed" ){
-                    todo.style.display = 'flex'
-                } else {
-                    todo.style.display = 'none'
-                }         
-                break;
-            case 'clearcompleted':
-                if(todo.classList[1] === "completed" ){
-                    todo.remove();
-                    decrement();
-                }
-                break;
-            default:
-                break;
-        }
-    }
+function delJSON() {
+  addTodo(jsonList.splice(jsonList.indexOf(), 1));
+  // console.log(addTodo(jsonList.filter((item) => item.id !== id)))
+  decrement();
+  
+}
+
+function showAll(val) {
+  // addTodo(jsonList);
+	// addTodo(todos);
+  return val  ? addTodo(jsonList) : addTodo(todos)
+}
+
+function active() {
+	addTodo(todos.filter((t) => !t.done))  
+}
+
+function completed() {
+	addTodo(todos.filter((t) => t.done))  
+}
+
+function clearCompleted(val) {
+  addTodo(jsonList.splice(jsonList.indexOf(), 1));
+	// return val ? addTodo(jsonList.splice(jsonList.indexOf(), 1)): addTodo(todos.splice(todos.indexOf(), 1));;
+  decrement();
 }
