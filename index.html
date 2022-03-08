@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -18,44 +18,47 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="style.css" />
-    <title>L</title>
-    <style></style>
-</head>
-<body>
+    <title>Todo in JS</title>
+    <style>
+      
+    </style>
+  </head>
+  <body>
     <section id="sec">
-        <h1 id="head">TODO L</h1>
-
-        <form action="" id="form">
-            <div id="divOne">
-                <label class="custom-radio">
-                    <input type="radio" />
-                    <span class="checkmark"></span>
-                </label>
-                <input type="text" class="td" id="todoInput" value="" />
-            </div>
-            <button class="btn btn-primary" onclick="add()">ADD</button>
-        </form>
-    </section>
-
-    <div id="content">
-        <ul id="todoList">
-            <!-- <li>
+        <h1 id="head">TODO</h1>
+        
+        <form action="" id="form" onsubmit="event.preventDefault()">            
+            <div class="divOne">
+              <label class="custom-radio">
                 <input type="radio" />
-                <li>some txt</li>
-                <button onclick="trashBtn()">trash</button>
-            </li> -->
+                <span class="checkmark"></span>
+              </label>
+              <input type="text" class="td" id="todoInput" value="" />
+            </div>
+            <button type="submit" class="btn btn-primary" onclick="add()">ADD</button>
+        </form>
+
+    </section>
+    
+    <div class="container">
+        <ul id="todoList" class="list">
+          <!-- <div class="todo">
+            <input type="radio" class="custom-radio" />
+            <li class="todo-item"></li>
+            <i class="fa-solid fa-x trash-btn"></i>
+          </div> -->
         </ul>
     </div>
-
-    <div id="filter-todo" class="select">
+    
+    <div class="filter-todo select">
         <span id="incrementVal" class="word"></span>
         <span style="margin: 0; padding: 3px;">item left</span>
         <option value="all" class="word" onclick="showAll()">All</option>
         <option value="active" class="word" onclick="active()">Active</option>
         <option value="completed" class="word" onclick="completed()">Completed</option>
         <option value="clearcompleted" class="word" onclick="clearCompleted()">Clear Completed</option>
-    </div>
+    </div>  
 
-    <script src="./script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>

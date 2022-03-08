@@ -1,10 +1,5 @@
 let jsonList = [];
 
-let form = document.getElementById("form");
-form.addEventListener('submit', function(e){
-    e.preventDefault();
-})
-
 var count = 0;
 function increment() {
   count += 1;
@@ -16,69 +11,112 @@ function decrement() {
 }
 
 function addTodo(values) {
-  document.getElementById("todoList").innerHTML = ""
-  for (let todo of values) {
-    document.getElementById("todoList").innerHTML += `<div class="todo" 
-    style="color:${todo.color};
-    text-decoration: ${todo.done ? "line-through" : "auto"};"> 
-    <input type='radio' class="custom-radio" onclick="done(${todo.id})" />
+  document.getElementById('todoList').innerHTML = '';
+  for(let todo of values) {
+    document.getElementById("todoList").innerHTML += `<div class="todo"
+    style="text-decoration: ${todo.done ? "line-through" : "auto"};"> 
+    <input type="radio" class='custom-radio' onclick="done(${todo.id})" />
     ${todo.id}  - ${todo.text} - ${todo.timestamp}
-    <button class='trash-btn' onclick="delJSON()">
+    <button class='trash-btn' onclick="delJSON(${todo.id})">
     <i class="fa-solid fa-x"></i></button>
     </div>`
   }
-  console.log(values);
+  // console.log(jsonList);
 }
 
 let id = 0;
 function add() {
-	id++;
-	jsonList.push({
-  	id: id,
+  id++;
+  jsonList.push({
+    id: id,
     text: document.getElementById("todoInput").value,
-    timestamp: new Date(),
-    color: id % 2 === 0 ?  "green" : "red",
-    done: false
-  });
-  document.getElementById("todoInput").value = ""
+    timestamp: new Date().toUTCString(),
+    done: false,
+  })
+  document.getElementById('todoInput').value = '';
   addTodo(jsonList);
   increment();
 }
 
 function done(id) {
-	todos = jsonList.map((td) => {
-  	if (td.id === id) {
-    	return {...td, done: !td.done}
-    }
-    return td;
-  })
-  addTodo(todos);
+	// todos = jsonList.map((td) => {
+  // 	if (td.id === id) {
+  //   	return {...td, done: !td.done}
+  //   }
+  //   return td;
+  // })
+  // addTodo(todos);
   // console.log(todos);
+
+  for(let i=0; i <jsonList.length; i++) {
+    var td = jsonList[i];
+    if(td.id === id){
+      td.done = !td.done;
+    }
+    console.log(td);
+  }
+  addTodo(jsonList);
 }
 
-function delJSON() {
-  addTodo(jsonList.splice(jsonList.indexOf(), 1));
-  // console.log(addTodo(jsonList.filter((item) => item.id !== id)))
-  decrement();
-  
-}
-
-function showAll(val) {
+function delJSON(id) {
+  // jsonList = jsonList.filter((t) => {
+  //   return t.id !== id
+  // });
   // addTodo(jsonList);
-	// addTodo(todos);
-  return val  ? addTodo(jsonList) : addTodo(todos)
+  // if(count > 0) decrement();
+
+  for(let i=0; i<jsonList.length; i++) {
+    if(jsonList[i].id === id) {
+      jsonList.splice(i,1)
+    }
+  }
+  addTodo(jsonList);
+  decrement();
+}
+
+function showAll() {
+  addTodo(jsonList);
 }
 
 function active() {
-	addTodo(todos.filter((t) => !t.done))  
+  let activeArr = [];
+  for(let todo of jsonList){
+    if(!todo.done) {
+      activeArr.push(todo);
+    }
+  }
+  addTodo(activeArr);
+  
+	// addTodo(jsonList.filter((t) => !t.done));
 }
 
 function completed() {
-	addTodo(todos.filter((t) => t.done))  
+  let completedArr = [];
+  for(let todo of jsonList) {
+    if(todo.done){
+      completedArr.push(todo);
+    }
+  }
+  addTodo(completedArr);
+
+	// addTodo(jsonList.filter((t) => t.done)); 
 }
 
-function clearCompleted(val) {
-  addTodo(jsonList.splice(jsonList.indexOf(), 1));
-	// return val ? addTodo(jsonList.splice(jsonList.indexOf(), 1)): addTodo(todos.splice(todos.indexOf(), 1));;
-  decrement();
+function clearCompleted() {
+  // if(jsonList.some(elm => elm.done === true)) {
+  //   jsonList = jsonList.filter((t) => !t.done);
+  //   addTodo(jsonList)
+  //   decrement();
+  // }
+
+  let clearArr = [];
+  for(let todo of jsonList) {
+    if(!todo.done) {
+      clearArr.push(todo)
+    }
+  }
+  jsonList = clearArr;
+  addTodo(jsonList);
+  
+  if(count > 0) decrement();
 }
